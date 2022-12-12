@@ -22,6 +22,16 @@ const loadCSV = (path) => {
     })
 }
 
+// const loadClaims = (path) =>{
+//     const res = [];
+//     return new Promise((resolve, reject)=>{
+//         fs.createReadStream(path)
+//         .pipe(csv())
+
+//     })
+
+// }
+
 async function main() {
     const claims = await loadCSV('./claimSample.csv');
     const dropDown = await loadCSV('./claimDropDown.csv');
@@ -31,17 +41,34 @@ async function main() {
     }
 
     for(let cc of claims ) {
-        cc.FIELD_NAM = myMap[cc.FIELD_NAM]//replaces fields 
+        cc.FIELD_NAME = myMap[cc.FIELD_NAME]//replaces fields 
+       const claim = claims.toString() 
+       new ObjectsToCsv(claim).toDisk('./test.csv');
     }
 
-    console.table(myMap)
+    //console.table(myMap)
+  
+//await new ObjectsToCsv(claims).toDisk('./test.csv');
+//  await new ObjectsToCsv(claims).toString('./test.csv');
+
+//  (async () => {
+//     const csv = new ObjectsToCsv(claims)
+//     csv.toString().toDisk();
     
-    new ObjectsToCsv(claims).toDisk('./test.csv');
+     
+    
+   
+   
+//   })();
+
+
 
     
 }
 
 main();
+
+
 
 // for (let dropdown of dropDown) {
 //     myMap[dropdown.CODE_ID] = dropdown.CODE_DESC;//mymap is an empty object that takes an object and maps fields based on what paremeters

@@ -1,5 +1,7 @@
 const csv = require('csv-parser')
 const fs = require('fs');
+const { default: nodeTest } = require('node:test');
+
 const myMap = {};
 
 
@@ -23,10 +25,16 @@ async function main() {
     const dropDown = await loadCSV('./claimDropDown.csv');
 
     for (let dd of dropDown) {
-        myMap[dd.CODE_ID] = dd.CODE_DESC;
+        myMap[dd.CODE_ID] = dd.CODE_DESC;//initializes map
     }
 
-    console.log(myMap)
+    for(let cc of claims ) {
+        cc.FIELD_NAM = myMap[cc.FIELD_NAM]//replaces fields 
+    }
+
+    
+
+    console.table(myMap)
 }
 
 main();

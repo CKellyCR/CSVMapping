@@ -1,6 +1,8 @@
 const csv = require('csv-parser')
 const fs = require('fs');
 const { default: nodeTest } = require('node:test');
+const ObjectsToCsv = require('objects-to-csv');
+
 
 const myMap = {};
 
@@ -32,9 +34,11 @@ async function main() {
         cc.FIELD_NAM = myMap[cc.FIELD_NAM]//replaces fields 
     }
 
-    
-
     console.table(myMap)
+    
+    new ObjectsToCsv(claims).toDisk('./test.csv');
+
+    
 }
 
 main();

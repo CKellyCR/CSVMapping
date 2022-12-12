@@ -10,7 +10,7 @@ const sample = fs.createReadStream('./claimSample.csv')
   .pipe(csv())
   .on('data', (data) => claims.push(data))
   .on('end', () => {
-    console.table(claims);
+    //console.table(claims);
     
   });
 
@@ -18,13 +18,15 @@ const sample = fs.createReadStream('./claimSample.csv')
   .pipe(csv())
   .on('data', (data) => dropDown.push(data))
   .on('end', () => {
-    console.table(dropDown);
+    //console.table(dropDown);
     
   });
 
-for (let dropdown of dropDown) {
-    myMap[dropdown.CODE_ID] = dropdown.CODE_DESC;//mymap is an empty object that takes an object and maps fields based on what paremeters
+for (let claims of dropDown) {
+    myMap[claims.CODE_ID] = claims.CODE_DESC;//mymap is an empty object that takes an object and maps fields based on what paremeters
 }
 
-//console.table(myMap);
+
+
+console.table(myMap);
 

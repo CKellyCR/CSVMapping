@@ -1,6 +1,7 @@
 const csv = require('csv-parser')
 const fs = require('fs')
 const myMap = {};
+const results = [];
 
 // const claimDropdown = [//will load in with csv parser
 //     {
@@ -15,9 +16,9 @@ const myMap = {};
 
 fs.createReadStream('claimSample.csv')
   .pipe(csv())
-  .on('claimSample', (claimSample) => results.push(claimSample))
+  .on('claimSample', (claimSample) => myMap.push(claimSample))
   .on('end', () => {
-    console.log(myMap);
+    console.table(myMap);
     // [
     //   { NAME: 'Daffy Duck', AGE: '24' },
     //   { NAME: 'Bugs Bunny', AGE: '22' }
@@ -28,7 +29,7 @@ fs.createReadStream('claimSample.csv')
   .pipe(csv())
   .on('claimDropDown', (claimDropDown) => results.push(claimDropDown))
   .on('end', () => {
-    console.log(myMap);
+    console.table(results);
     // [
     //   { NAME: 'Daffy Duck', AGE: '24' },
     //   { NAME: 'Bugs Bunny', AGE: '22' }
@@ -41,21 +42,21 @@ for (let dropdown of claimDropdown) {
 
 console.table(myMap);
 
-const inputData = [//will load in with csv parser
-  {
-    Carrier: 'ACE',
-    CLAIM_ID: 5
-  },
-  {
-    Carrier: 'AFM',
-    CLAIM_ID: 9
-  }
-]
+// const inputData = [//will load in with csv parser
+//   {
+//     Carrier: 'ACE',
+//     CLAIM_ID: 5
+//   },
+//   {
+//     Carrier: 'AFM',
+//     CLAIM_ID: 9
+//   }
+// ]
 
-console.table(inputData);
+// console.table(inputData);
 
-for (let input of inputData) {
-  input.Carrier = myMap[input.Carrier]
-}
+// for (let input of inputData) {
+//   input.Carrier = myMap[input.Carrier]
+// }
 
 console.table(inputData);

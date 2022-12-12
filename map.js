@@ -1,32 +1,44 @@
 const csv = require('csv-parser')
-const fs = require('fs')
+const fs = require('fs');
 const myMap = {};
-const claims = [];
-const dropDown = [];
 
 
-
-const sample = fs.createReadStream('./claimSample.csv')
-  .pipe(csv())
-  .on('data', (data) => claims.push(data))
-  .on('end', () => {
-    //console.table(claims);
-    
-  });
-
-  const claimDropDown= fs.createReadStream('./claimDropDown.csv')
-  .pipe(csv())
-  .on('data', (data) => dropDown.push(data))
-  .on('end', () => {
-    //console.table(dropDown);
-    
-  });
-
-for (let claims of dropDown) {
-    myMap[claims.CODE_ID] = claims.CODE_DESC;//mymap is an empty object that takes an object and maps fields based on what paremeters
+const loadCSV = (path) => {
+    const res = [];
+    return new Promise((resolve, reject) => {
+        fs.createReadStream(path)
+        .pipe(csv())
+        .on('data', (data) => res.push(data))
+        .on('end', () => {
+            resolve(res);
+        })
+        .on('error', (err) => {
+            reject(err)
+        });
+    })
 }
 
+async function main() {
+    const claims = await loadCSV('./claimSample.csv');
+    const dropDown = await loadCSV('./claimDropDown.csv');
+
+    for (let dd of dropDown) {
+        myMap[dd.CODE_ID] = dd.CODE_DESC;
+    }
+
+    console.log(myMap)
+}
+
+main();
+
+// for (let dropdown of dropDown) {
+//     myMap[dropdown.CODE_ID] = dropdown.CODE_DESC;//mymap is an empty object that takes an object and maps fields based on what paremeters
+// }
 
 
-console.table(myMap);
+// // for (let input of sample ) {
+// //     input.Carrier = myMap[input.Carrier]
+// //   }
+  
+// console.table(myMap);
 

@@ -42,9 +42,9 @@ async function main() {
     }
 
     for(let cc of claims ) {
-        cc.FIELD_NAME = myMap[cc.FIELD_NAME]//replaces fields 
-       
-       //new ObjectsToCsv(claims).toDisk('./test.csv');
+        cc.FIELD_NAM = myMap[cc.FIELD_NAM]//replaces fields 
+       //convertArrayToCSV(myMap).toDisk("./test.csv")
+       new ObjectsToCsv(claims).toDisk('./test.csv');
     }
 
     console.table(myMap)

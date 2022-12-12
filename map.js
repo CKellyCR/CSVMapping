@@ -1,62 +1,30 @@
 const csv = require('csv-parser')
 const fs = require('fs')
 const myMap = {};
-const results = [];
+const claims = [];
+const dropDown = [];
 
-// const claimDropdown = [//will load in with csv parser
-//     {
-//         CODE_ID: 'ACE',
-//         CODE_DESC: 'ACE INA PRIM'
-//     },
-//     {
-//         CODE_ID: 'AFM',
-//         CODE_DESC: 'AFFILIATED FM INSURANCE'
-//     }
-// ]
 
-fs.createReadStream('claimSample.csv')
+
+const sample = fs.createReadStream('./claimSample.csv')
   .pipe(csv())
-  .on('claimSample', (claimSample) => myMap.push(claimSample))
+  .on('data', (data) => claims.push(data))
   .on('end', () => {
-    console.table(myMap);
-    // [
-    //   { NAME: 'Daffy Duck', AGE: '24' },
-    //   { NAME: 'Bugs Bunny', AGE: '22' }
-    // ]
+    console.table(claims);
+    
   });
 
-  fs.createReadStream('claimDropDown')
+  const claimDropDown= fs.createReadStream('./claimDropDown.csv')
   .pipe(csv())
-  .on('claimDropDown', (claimDropDown) => results.push(claimDropDown))
+  .on('data', (data) => dropDown.push(data))
   .on('end', () => {
-    console.table(results);
-    // [
-    //   { NAME: 'Daffy Duck', AGE: '24' },
-    //   { NAME: 'Bugs Bunny', AGE: '22' }
-    // ]
+    console.table(dropDown);
+    
   });
 
-for (let dropdown of claimDropdown) {
+for (let dropdown of dropDown) {
     myMap[dropdown.CODE_ID] = dropdown.CODE_DESC;//mymap is an empty object that takes an object and maps fields based on what paremeters
 }
 
-console.table(myMap);
+//console.table(myMap);
 
-// const inputData = [//will load in with csv parser
-//   {
-//     Carrier: 'ACE',
-//     CLAIM_ID: 5
-//   },
-//   {
-//     Carrier: 'AFM',
-//     CLAIM_ID: 9
-//   }
-// ]
-
-// console.table(inputData);
-
-// for (let input of inputData) {
-//   input.Carrier = myMap[input.Carrier]
-// }
-
-console.table(inputData);

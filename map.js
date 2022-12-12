@@ -1,4 +1,5 @@
 const csv = require('csv-parser')
+const { convertArrayToCSV } = require('convert-array-to-csv')
 const fs = require('fs');
 const { default: nodeTest } = require('node:test');
 const ObjectsToCsv = require('objects-to-csv');
@@ -42,11 +43,11 @@ async function main() {
 
     for(let cc of claims ) {
         cc.FIELD_NAME = myMap[cc.FIELD_NAME]//replaces fields 
-       const claim = claims.toString() 
-       new ObjectsToCsv(claim).toDisk('./test.csv');
+       
+       //new ObjectsToCsv(claims).toDisk('./test.csv');
     }
 
-    //console.table(myMap)
+    console.table(myMap)
   
 //await new ObjectsToCsv(claims).toDisk('./test.csv');
 //  await new ObjectsToCsv(claims).toString('./test.csv');

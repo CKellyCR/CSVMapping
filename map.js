@@ -3,6 +3,7 @@ const { convertArrayToCSV } = require('convert-array-to-csv')
 const fs = require('fs');
 const { default: nodeTest } = require('node:test');
 const ObjectsToCsv = require('objects-to-csv');
+const Fuse = require('fuse.js')
 
 
 const myMap = {};
@@ -20,8 +21,8 @@ const loadCSV = (path) => {
         .on('error', (err) => {
             reject(err)
         });
-    })
-}
+    });
+};
 
     /*
     dropDowns contains a list of objects, which contain a name and an array.

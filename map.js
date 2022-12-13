@@ -33,41 +33,108 @@ const loadCSV = (path) => {
 
 // }
 
-async function main() {
-    const claims = await loadCSV('./claimSample.csv');
-    const dropDown = await loadCSV('./claimDropDown.csv');
+    /*
+    dropDowns contains a list of objects, which contain a name and an array.
+    ex:
+    {
+        name: 'Carrier', // field name to be replaced.
+        values: [] // list of values you can pull from.
+
+    }
+    */
+
+const handleMapping = async (claimsPath, valuesPath) => {
+    const claims = await loadCSV(claimsPath);
+    const dropDown = await loadCSV(valuesPath);
+
+    const mappings = [];
+
+    const addMapping = (field, value) => {
+        let mapping = mappings.find(x => x.name.toLowerCase() === field.toLowerCase());
+        if (mapping !== undefined) {
+            if (mapping?.values === undefined) {
+                mapping.values = [];
+            }
+            mapping.values.push(value);
+        } else {
+            mappings.push({
+                name: field
+            })
+            addMapping(field,value);
+        }
+    }
+
+    const getMapping = (field, key) => {
+        let mapping = mappings.find(x => x.name.toLowerCase() == field.toLowerCase());
+        if (mapping !== undefined) {
+            let potentialValue = mapping.values.find(x => x.Key === key);
+            if (potentialValue !== undefined) {
+                return potentialValue.Value;
+            }
+        }
+
+        return undefined;
+    }
 
     for (let dd of dropDown) {
-        myMap[dd.CODE_ID] = dd.CODE_DESC;//initializes map
+        addMapping(dd.FIELD_NAM, {
+            Key: dd.CODE_ID,
+            Value: dd.CODE_DESC
+        })
     }
 
-    for(let cc of claims ) {
-        cc.FIELD_NAM = myMap[cc.FIELD_NAM]//replaces fields 
-       //convertArrayToCSV(myMap).toDisk("./test.csv")
-       new ObjectsToCsv(claims).toDisk('./test.csv');
+    let mapping = getMapping('Carrier', 'ACE');
+    console.log(mapping);
+
+    for (let claim of claims) {
+        for (let field of Object.keys(claim)) {
+            // console.log(field);
+            // console.log(`Field: ${field}, Value: ${claim[field]}`)
+            let mapping = getMapping(field, claim[field]);
+            if (mapping != undefined) {
+                claim[field] = mapping;
+            }
+        }
     }
 
-    console.table(myMap)
-  
-//await new ObjectsToCsv(claims).toDisk('./test.csv');
-//  await new ObjectsToCsv(claims).toString('./test.csv');
+    let csvData = new ObjectsToCsv(claims);
+    await csvData.toDisk('./test.csv');
+    // for (let claim of claims) {
+    //     for (let field of Object.keys(claim)) {
+    //         // console.log(field);
+    //         let mapping = getMapping(field, claim[field]);
+    //     }
+    // }
 
-//  (async () => {
-//     const csv = new ObjectsToCsv(claims)
-//     csv.toString().toDisk();
-    
-     
-    
-   
-   
-//   })();
-
-
-
-    
 }
 
-main();
+handleMapping('./claimSample.csv', './claimDropDown.csv')
+
+// async function main() {
+
+//     const dropDowns = [];
+
+//     for (let dd of dropDown) {
+//         myMap[dd.CODE_ID] = dd.CODE_DESC;//initializes map
+//     }
+
+//     for(let cc of claims ) {
+//         cc.FIELD_NAM =  myMap[cc.FIELD_NAM];//replaces fields 
+//         console.log()
+
+//        //new ObjectsToCsv(claims).toDisk('./test.csv');
+//     }
+
+//     const csv = new ObjectsToCsv(claims);
+//     await csv.toDisk('./test.csv');
+
+//     console.table(myMap);
+
+
+    
+// }
+
+// main();
 
 
 

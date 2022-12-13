@@ -42,6 +42,8 @@ const handleMapping = async (claimsPath, valuesPath) => {//path variables are se
 
     const addMapping = (field, value) => {
         let mapping = mappings.find(x => x.name.toLowerCase() === field.toLowerCase());
+        //let mapping = mappings.fuse.search(x => x.name.toLowerCase() === field.toLowerCase());
+
         //let mapping = mappings.find(x => x.name.match() === field.match());
 
         if (mapping !== undefined) {

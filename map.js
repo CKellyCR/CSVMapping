@@ -139,17 +139,8 @@ const loadCSV = (path) => {
     });
 };
 
-    /*
-    dropDowns contains a list of objects, which contain a name and an array.
-    ex:
-    {
-        name: 'Carrier', // field name to be replaced.
-        values: [] // list of values you can pull from.
 
-    }
-    */
-
-const handleMapping = async (claimsPath, valuesPath) => {//path variables are set at the end of the code (both csv files)
+const handleMapping = async (claimsPath, valuesPath) => {
     const claims = await loadCSV(claimsPath);
     const dropDown = await loadCSV(valuesPath);
 
@@ -157,9 +148,7 @@ const handleMapping = async (claimsPath, valuesPath) => {//path variables are se
 
     const addMapping = (field, value) => {
         let mapping = mappings.find(x => x.name.toLowerCase() == field.toLowerCase());
-        //let mapping = mappings.fuse.search(x => x.name.toLowerCase() === field.toLowerCase());
-
-        // let mapping = mappings.find(x => x.name.match() === field.match());
+       
 
         if (mapping !== undefined) {
             if (mapping?.values === undefined) {
@@ -194,19 +183,12 @@ const handleMapping = async (claimsPath, valuesPath) => {//path variables are se
         });
     };
 
-    // for (let dd of dropDown){
-    //     addMapping(dd.)
-    // }
-
-    // let mapping = getMapping('SpecialAnalysis#106', '487550');
-    // console.log(mapping);
+   
 
     for (let claim of claims) {
         for (let field of Object.keys(claim)) {
 
             console.log(field);
-            // console.log(field);
-            // console.log(`Field: ${field}, Value: ${claim[field]}`)
             let fieldname = field;
             if (specialMapping[field] != undefined) {
                 fieldname = specialMapping[field];
@@ -220,53 +202,11 @@ const handleMapping = async (claimsPath, valuesPath) => {//path variables are se
 
     let csvData = new ObjectsToCsv(claims);
     await csvData.toDisk('./test.csv');
-    // for (let claim of claims) {
-    //     for (let field of Object.keys(claim)) {
-    //         // console.log(field);
-    //         let mapping = getMapping(field, claim[field]);
-    //     }
-    // }
+
 
 }
 
 handleMapping('./claimSample.csv', './claimDropDown.csv')
 
-// async function main() {
 
-//     const dropDowns = [];
-
-//     for (let dd of dropDown) {
-//         myMap[dd.CODE_ID] = dd.CODE_DESC;//initializes map
-//     }
-
-//     for(let cc of claims ) {
-//         cc.FIELD_NAM =  myMap[cc.FIELD_NAM];//replaces fields 
-//         console.log()
-
-//        //new ObjectsToCsv(claims).toDisk('./test.csv');
-//     }
-
-//     const csv = new ObjectsToCsv(claims);
-//     await csv.toDisk('./test.csv');
-
-//     console.table(myMap);
-
-
-    
-// }
-
-// main();
-
-
-
-// for (let dropdown of dropDown) {
-//     myMap[dropdown.CODE_ID] = dropdown.CODE_DESC;//mymap is an empty object that takes an object and maps fields based on what paremeters
-// }
-
-
-// // for (let input of sample ) {
-// //     input.Carrier = myMap[input.Carrier]
-// //   }
-  
-// console.table(myMap);
 

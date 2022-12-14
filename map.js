@@ -4,6 +4,22 @@ const fs = require('fs');
 const { default: nodeTest } = require('node:test');
 const ObjectsToCsv = require('objects-to-csv');
 const Fuse = require('fuse.js')
+const specialMapping = {}
+
+specialMapping["COVERAGE"]= "CoverageCode";
+specialMapping["STATUS"]= "CurrentLostStatus";
+specialMapping[""]= "Litigation";
+specialMapping["OSHASEV"]= "OSHASeverity";
+specialMapping[""]= "";
+specialMapping[""]= "";
+specialMapping[""]= "";
+specialMapping[""]= "";
+specialMapping[""]= "";
+specialMapping[""]= "";
+specialMapping[""]= "";
+specialMapping[""]= "";
+specialMapping[""]= "";
+
 
 
 const myMap = {};
@@ -41,10 +57,10 @@ const handleMapping = async (claimsPath, valuesPath) => {//path variables are se
     const mappings = [];
 
     const addMapping = (field, value) => {
-        let mapping = mappings.find(x => x.name.toLowerCase() === field.toLowerCase());
+        //let mapping = mappings.find(x => x.name.toLowerCase() == field.toLowerCase());
         //let mapping = mappings.fuse.search(x => x.name.toLowerCase() === field.toLowerCase());
 
-        //let mapping = mappings.find(x => x.name.match() === field.match());
+        let mapping = mappings.find(x => x.name.match() === field.match());
 
         if (mapping !== undefined) {
             if (mapping?.values === undefined) {

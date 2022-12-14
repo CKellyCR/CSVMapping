@@ -156,10 +156,10 @@ const handleMapping = async (claimsPath, valuesPath) => {//path variables are se
     const mappings = [];
 
     const addMapping = (field, value) => {
-        //let mapping = mappings.find(x => x.name.toLowerCase() == field.toLowerCase());
+        let mapping = mappings.find(x => x.name.toLowerCase() == field.toLowerCase());
         //let mapping = mappings.fuse.search(x => x.name.toLowerCase() === field.toLowerCase());
 
-        let mapping = mappings.find(x => x.name.match() === field.match());
+        // let mapping = mappings.find(x => x.name.match() === field.match());
 
         if (mapping !== undefined) {
             if (mapping?.values === undefined) {
@@ -175,6 +175,7 @@ const handleMapping = async (claimsPath, valuesPath) => {//path variables are se
     };
 
     const getMapping = (field, key) => {
+        let mappedName = field;
         let mapping = mappings.find(x => x.name.toLowerCase() == field.toLowerCase());
         if (mapping !== undefined) {
             let potentialValue = mapping.values.find(x => x.Key === key);
@@ -197,14 +198,20 @@ const handleMapping = async (claimsPath, valuesPath) => {//path variables are se
     //     addMapping(dd.)
     // }
 
-    let mapping = getMapping('SpecialAnalysis#106', '487550');
-    console.log(mapping);
+    // let mapping = getMapping('SpecialAnalysis#106', '487550');
+    // console.log(mapping);
 
     for (let claim of claims) {
         for (let field of Object.keys(claim)) {
+
+            console.log(field);
             // console.log(field);
             // console.log(`Field: ${field}, Value: ${claim[field]}`)
-            let mapping = getMapping(field, claim[field]);
+            let fieldname = field;
+            if (specialMapping[field] != undefined) {
+                fieldname = specialMapping[field];
+            }
+            let mapping = getMapping(fieldname, claim[field]);
             if (mapping != undefined) {
                 claim[field] = mapping;
             }
